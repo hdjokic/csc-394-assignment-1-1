@@ -1,36 +1,61 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser');
 const port = process.env.PORT || 5000
+
+//View Engine
+app.set("view engine", "jade")
+
+//parse app
+app.use(bodyParser.json());
+
+//parse xww-app
+app.use(bodyParser.urlencoded({extended:true}));
+
+
 //Database
 const Pool = require('pg').Pool
-const connectionParams = process.env.DATABASE_URL || {
-	user: 'api_user',
-	host: 'localhost',
-	database: 'api',
-	password: 'password',
-	port: 5432
-}
 
-const pool = new Pool({
-	user: 'api_user',
-	host: process.env.DATABASE_URL || 'localhost',
-	database: 'api',
-	password: 'password',
-	port: 5432
-	})
+var connectionParams = null;
+if (process.env.DATABASE_URL != null){
+	connectionParams = {
+		connectionString: process.env.DATABASE_URL,
+		ssl: {rehectUnauthorized: false}
+	}
+}else{
 	
+	connectionParams = {
+		user: 'api_user',
+		host: 'localhost',
+		database: 'api',
+		password: 'password',
+		port: 5432
+	}
+}
+console.log(connectionParams)
+const pool = new Pool(connectionParams)
 	
 	
 
 app.get('/', (req, res) => {
-	console.log('Accept: ' + req.get('Accept'))
-	pool.query('SELECT VERSION()', (err, result)=>{
-		console.log(err, result.rows)
-		res.send('<h1>DB Version: ${result.rows[0].version} </h1>')
-		console.log('Content-type' + res.get('Content-Type'))
-	})
+ console.log('Accept: ' + req.get('Accept'))
+ pool.query('SELECT VERSION()', (err, version_results) => {
+ console.log(err, version_results.rows)
+ pool.query('SELECT * FROM team_members', (err, team_members_results) => {
+ console.log(err, team_members_results)
+ res.render('index', {
+ teamNumber: 3,
+ databaseVersion: version_results.rows[0].version,
+ teamMembers: team_members_results.rows
+ })
+ console.log('Content-Type: ' + res.get('Content-Type'))
+ })
+ })
 })
 
+
+
+
 app.listen(port, () => {
-	console.log('Example app listening on port ${port}')
+	console.log('Example app listening on port:' + port)
 })

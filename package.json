@@ -20,7 +20,9 @@
   "homepage": "https://github.com/hdjokic/csc-394-assignment-1-1#readme",
   "dependencies": {
     "express": "^4.17.3",
-    "pg": "^8.7.3"
+    "jade": "^1.11.0",
+    "pg": "^8.7.3",
+    "save": "^2.4.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
