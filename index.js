@@ -20,7 +20,7 @@ var connectionParams = null;
 if (process.env.DATABASE_URL != null){
 	connectionParams = {
 		connectionString: process.env.DATABASE_URL,
-		ssl: {rehectUnauthorized: false}
+		ssl: {rejectUnauthorized: false}
 	}
 }else{
 	
@@ -52,7 +52,6 @@ app.get('/', (req, res) => {
  })
  })
 })
-
 
 
 
