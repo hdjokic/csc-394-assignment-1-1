@@ -20,7 +20,8 @@ describe('The express server', function(){
                 done();
             });
     });
-    it('should not respond to PUT requests for the root path', function(done){
+    it('should not respond to PUT requests for the root path',
+    function(done){
         request(server)
         .put('/')
         .expect(404, function(err,res){
@@ -28,7 +29,8 @@ describe('The express server', function(){
             done();
         });
     });
-    it('should respond to valid POST request for the root path, with a redirect', function(done){
+    it('should respond to valid POST request for the root path, with a redirect', 
+    function(done){
         request(server)
         .post('/')
         .send({
@@ -39,7 +41,8 @@ describe('The express server', function(){
         .expect('Location', '/')
         .end(done);
     });
-    it('should respond to invalid POST request for the root path, with an error', function(done){
+    it('should respond to invalid POST request for the root path, with an error', 
+    function(done){
         request(server)
         .post('/')
         .expect(400)
