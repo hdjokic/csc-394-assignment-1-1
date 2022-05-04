@@ -20,11 +20,14 @@
   "homepage": "https://github.com/hdjokic/csc-394-assignment-1-1#readme",
   "dependencies": {
     "express": "^4.17.3",
+    "mocha": "^10.0.0",
     "pg": "^8.7.3",
     "pug": "^3.0.2",
     "save": "^2.4.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "chai": "^4.3.6",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.3"
   }
 }
