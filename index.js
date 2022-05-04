@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const port = process.env.PORT || 5000
 
 //View Engine
-app.set("view engine", "jade")
+app.set("view engine", "pug")
 
 //parse app
 app.use(bodyParser.json());
