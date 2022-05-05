@@ -6,15 +6,20 @@ var app = express();
 
 var bodyParser = require('body-parser');
 
-var port = process.env.PORT || 5000; //View Engine
+var _require = require('express-validator'),
+    body = _require.body,
+    validationResult = _require.validationResult;
 
-app.set("view engine", "pug"); //parse app
+var port = process.env.PORT || 3000; // Set the view engine for the express app
 
-app.use(bodyParser.json()); //parse xww-app
+app.set("view engine", "pug"); // for parsing application/json
+
+app.use(bodyParser.json()); // for parsing application/xwww-
 
 app.use(bodyParser.urlencoded({
   extended: true
-})); //Database
+})); //form-urlencoded
+// Database
 
 var Pool = require('pg').Pool;
 
@@ -46,12 +51,30 @@ app.get('/', function (req, res) {
     pool.query('SELECT * FROM team_members', function (err, team_members_results) {
       console.log(err, team_members_results);
       res.render('index', {
-        teamNumber: 3,
+        teamNumber: 5,
         databaseVersion: version_results.rows[0].version,
         teamMembers: team_members_results.rows
       });
       console.log('Content-Type: ' + res.get('Content-Type'));
     });
+  });
+});
+app.post('/', body('first_name').isAlpha().isLength({
+  min: 1
+}).withMessage('must be valid'), body('last_name').isAlpha().isLength({
+  min: 0
+}).withMessage('must be valid'), function (req, res) {
+  var errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).send({
+      errors: errors.array()
+    });
+  }
+
+  pool.query("INSERT INTO team_members (first_name, last_name) VALUES ('".concat(req.body.first_name, "', '").concat(req.body.last_name, "')"), function (err, result) {
+    console.log(err, result);
+    res.redirect('/');
   });
 });
 module.exports = app;
