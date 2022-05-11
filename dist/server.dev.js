@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({
 var Pool = require('pg').Pool;
 
 var connectionParams = null;
+/* istanbul ignore if */
 
 if (process.env.DATABASE_URL != null) {
   connectionParams = {
